@@ -7,8 +7,10 @@
 3. Run `npm install` inside the portfolio2 directory.
 
 ## Requirements
-* See [bower.json](./bower.json) 
+* See [bower.json](./bower.json) for client-side.
+* See [package.json](./package.json) for server-side.
 
 ## Docs
 * [Calendar](http://angular-ui.github.io/ui-calendar/)
 * [SMS/Texting API](https://www.twilio.com/docs/)
+* [Express-Server](https://expressjs.com/)
