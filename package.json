@@ -1,0 +1,29 @@
+{
+  "name": "portfolio2",
+  "version": "1.0.0",
+  "description": "SMS/reminder notification system.",
+  "main": "main.js",
+  "dependencies": {
+    "twilio": "^2.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isu-cs319/portfolio2.git"
+  },
+  "keywords": [
+    "SMS",
+    "Twilio",
+    "Angular",
+    "Calendar"
+  ],
+  "author": "DavidSchott, eaanders",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isu-cs319/portfolio2/issues"
+  },
+  "homepage": "https://github.com/isu-cs319/portfolio2#readme"
+}

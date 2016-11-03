@@ -1,6 +1,12 @@
 # Bower components
 bower_components/
 
+# Node modules
+node_modules/
+
+# Idea IDE
+.idea/
+.idea/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
