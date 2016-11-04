@@ -5,6 +5,7 @@
 1. Run `npm install -g bower`.
 2. Run `bower install` inside the portfolio2 directory.
 3. Run `npm install` inside the portfolio2 directory.
+4. Run `node main.js` to host on `http://localhost:8888/`
 
 ## Requirements
 * See [bower.json](./bower.json) for client-side.

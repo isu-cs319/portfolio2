@@ -1,24 +1,27 @@
 var http = require("http");
 var express = require('express')
 var app = express()
+app.use(express.static(__dirname + '/public'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 // respond with "<index.html>" when a GET request is made to the homepage
 app.get('/', function (req, res) {
   var options = {
-    root: __dirname + '/public/',
+    //root: __dirname,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
       'x-sent': true
     }
   };
-  res.sendFile('index.html', options, function (err) {
+  var file = '/index.html'
+  res.sendFile(file, options, function (err) {
     if (err) {
       console.log(err);
       res.status(err.status).end();
     }
     else {
-      console.log('Sent:', 'index.html');
+      console.log('Sent:', file);
     }
   });
 })
