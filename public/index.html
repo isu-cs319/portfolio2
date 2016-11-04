@@ -14,8 +14,10 @@
     <script type="text/javascript" src="js/index.js"></script>
     </head>
     <body>
-    <div ng-app="App" ng-controller="myCtrl">
-        <div ui-calendar ng-model="eventSources"></div>
+    <div ng-app="app">
+        <div ng-controller="myCtrl">
+            <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+        </div>
     </div>
     </body>
 </html>
