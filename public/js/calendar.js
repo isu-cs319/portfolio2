@@ -3,8 +3,8 @@
  */
 var app = angular.module('app', ['ui.calendar', 'ui.bootstrap']);
 
-
-app.controller('myCtrl', ['$scope', function($scope, uiCalendarConfig) {
+// Calendar controller
+app.controller('myCtrl', ['$scope', function($scope) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -118,9 +118,9 @@ app.controller('myCtrl', ['$scope', function($scope, uiCalendarConfig) {
 
 
 // Modal controller
-app.controller('modalCtrl', function ($uibModal, $log, $document) {
+app.controller('modalCtrl', ['$uibModal','$log','$document','$scope', function ($uibModal, $log, $document,$scope) {
     var $ctrl = this;
-    $ctrl.items = ['item1', 'item2', 'item3'];
+    $ctrl.items = $scope.events;
 
     $ctrl.animationsEnabled = true;
 
@@ -167,11 +167,11 @@ app.controller('modalCtrl', function ($uibModal, $log, $document) {
         });
     };
 
-});
+}]);
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
 
-app.controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
+app.controller('ModalInstanceCtrl',function ($uibModalInstance, items) {
     var $ctrl = this;
     $ctrl.items = items;
     $ctrl.selected = {
@@ -211,5 +211,84 @@ app.component('modalComponent', {
         $ctrl.cancel = function () {
             $ctrl.dismiss({$value: 'cancel'});
         };
+    }
+});
+
+// Begin Timepicker
+app.controller('timeCtrl', function ($scope, $log) {
+    //$scope.mytime = new Date();
+
+    $scope.hstep = 1;
+    $scope.mstep = 15;
+
+    $scope.ismeridian = true;
+
+    $scope.update = function() {
+        var d = new Date();
+        d.setHours( 14 );
+        d.setMinutes( 0 );
+        $scope.mytime = d;
+    };
+
+    $scope.changed = function () {
+        $log.log('Time changed to: ' + $scope.mytime);
+    };
+
+   /* $scope.clear = function() {
+        $scope.mytime = null;
+    };*/
+});
+// Date controller
+app.controller('dateCtrl', function ($scope) {
+    $scope.today = function() {
+        $scope.mytime = new Date();
+    };
+    $scope.today();
+
+    $scope.clear = function() {
+        $scope.mytime = null;
+    };
+
+    $scope.options = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+
+    $scope.setDate = function(year, month, day) {
+        $scope.mytime = new Date(year, month, day);
+    };
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date(tomorrow);
+    afterTomorrow.setDate(tomorrow.getDate() + 1);
+    $scope.events = [
+        {
+            date: tomorrow,
+            status: 'full'
+        },
+        {
+            date: afterTomorrow,
+            status: 'partially'
+        }
+    ];
+
+    function getDayClass(data) {
+        var date = data.date,
+            mode = data.mode;
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+            for (var i = 0; i < $scope.events.length; i++) {
+                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
+        }
+        return '';
     }
 });
