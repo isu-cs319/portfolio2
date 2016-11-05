@@ -3,7 +3,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Portfolio 2: SMS Reminder</title>
+    <link rel="stylesheet" href="bower_components//bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui/build/angular-ui.min.css"/>
     <!-- jquery, moment, and angular have to get included before fullcalendar -->
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
@@ -11,12 +13,50 @@
     <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui/build/angular-ui.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     </head>
     <body>
     <div ng-app="app">
         <div ng-controller="myCtrl">
+            <div ng-show="alertMessage != undefined && alertMessage != ''">
+                <h4>{{alertMessage}}</h4>
+            </div>
+            <button type="button" class="btn btn-primary" ng-click="addEvent()">
+                Add Event
+            </button>
             <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+        </div>
+
+
+        <div ng-controller="modalCtrl as $ctrl" class="modal-demo">
+            <script type="text/ng-template" id="myModalContent.html">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <ul>
+                        <li ng-repeat="item in $ctrl.items">
+                            <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+                        </li>
+                    </ul>
+                    Selected: <b>{{ $ctrl.selected.item }}</b>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                </div>
+            </script>
+
+            <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Open me!</button>
+            <button type="button" class="btn btn-default" ng-click="$ctrl.open('lg')">Large modal</button>
+            <button type="button" class="btn btn-default" ng-click="$ctrl.open('sm')">Small modal</button>
+            <div ng-show="$ctrl.selected">Selection from a modal: {{ $ctrl.selected }}</div>
+            <div class="modal-parent">
+            </div>
         </div>
     </div>
     </body>

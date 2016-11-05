@@ -1,7 +1,9 @@
 /**
  * Created by schott on 03.11.16.
  */
-var app = angular.module('app', ['ui.calendar']);
+var app = angular.module('app', ['ui.calendar', 'ui.bootstrap']);
+
+
 app.controller('myCtrl', ['$scope', function($scope, uiCalendarConfig) {
     var date = new Date();
     var d = date.getDate();
@@ -69,13 +71,14 @@ app.controller('myCtrl', ['$scope', function($scope, uiCalendarConfig) {
         }
     };
     /* add custom event*/
-    $scope.addEvent = function() {
-        $scope.events.push({
+    $scope.addEvent = function(elem) {
+        console.log(elem);
+       /* $scope.events.push({
             title: 'Open Sesame',
             start: new Date(y, m, 28),
             end: new Date(y, m, 29),
             className: ['openSesame']
-        });
+        });*/
     };
     /* remove event */
     $scope.remove = function(index) {
@@ -112,3 +115,101 @@ app.controller('myCtrl', ['$scope', function($scope, uiCalendarConfig) {
     $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 }]);
+
+
+// Modal controller
+app.controller('modalCtrl', function ($uibModal, $log, $document) {
+    var $ctrl = this;
+    $ctrl.items = ['item1', 'item2', 'item3'];
+
+    $ctrl.animationsEnabled = true;
+
+    $ctrl.open = function (size, parentSelector) {
+        var parentElem = parentSelector ?
+            angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+        var modalInstance = $uibModal.open({
+            animation: $ctrl.animationsEnabled,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'myModalContent.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            size: size,
+            appendTo: parentElem,
+            resolve: {
+                items: function () {
+                    return $ctrl.items;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $ctrl.selected = selectedItem;
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+    $ctrl.openComponentModal = function () {
+        var modalInstance = $uibModal.open({
+            animation: $ctrl.animationsEnabled,
+            component: 'modalComponent',
+            resolve: {
+                items: function () {
+                    return $ctrl.items;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $ctrl.selected = selectedItem;
+        }, function () {
+            $log.info('modal-component dismissed at: ' + new Date());
+        });
+    };
+
+});
+// Please note that $uibModalInstance represents a modal window (instance) dependency.
+// It is not the same as the $uibModal service used above.
+
+app.controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
+    var $ctrl = this;
+    $ctrl.items = items;
+    $ctrl.selected = {
+        item: $ctrl.items[0]
+    };
+
+    $ctrl.ok = function () {
+        $uibModalInstance.close($ctrl.selected.item);
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+app.component('modalComponent', {
+    templateUrl: 'myModalContent.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    controller: function () {
+        var $ctrl = this;
+
+        $ctrl.$onInit = function () {
+            $ctrl.items = $ctrl.resolve.items;
+            $ctrl.selected = {
+                item: $ctrl.items[0]
+            };
+        };
+
+        $ctrl.ok = function () {
+            $ctrl.close({$value: $ctrl.selected.item});
+        };
+
+        $ctrl.cancel = function () {
+            $ctrl.dismiss({$value: 'cancel'});
+        };
+    }
+});

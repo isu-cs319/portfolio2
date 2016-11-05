@@ -3,7 +3,6 @@ var express = require('express')
 var app = express()
 app.use(express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
-
 // respond with "<index.html>" when a GET request is made to the homepage
 app.get('/', function (req, res) {
   var options = {
@@ -27,5 +26,5 @@ app.get('/', function (req, res) {
 })
 
 app.listen(8888, function () {
-  console.log('Example app listening on port 8888!')
+  console.log('listening on port 8888!')
 })
