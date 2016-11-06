@@ -39,8 +39,16 @@ app.post('/event',function(req,res){
     js[req.body.newEvent.id] = j;
 });
 
+// Remove an event
 app.post('/event/cancel', function(req,res){
-    delete js[req.body.id];
+    js[req.body.id].cancel(); // cancel job
+    delete js[req.body.id];  // Remove from list
+    for (var i = 0; i < events.length; i++) {
+        if (req.body.id == events[i].id){
+            events.splice(i,1);
+            res.send(JSON.stringify(events));
+        }
+    }
 });
 
 // Return current events
