@@ -1,19 +1,39 @@
+// Globals
 var http = require("http");
 var express = require('express')
 var app = express()
+var schedule = require('node-schedule')
 var bodyParser = require('body-parser')
 app.use(bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
+
+// Twilio Stuff
+var accountSid = 'ACe95176a3665dff3c959b81a7830b8797';
+var authToken = 'your_auth_token';  //TODO: changeme, do not upload to github!
+var twilio = require('twilio')(accountSid, authToken);
+
+// Routing Config
 app.use(express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 var events = [];
-
-// Update events
+var js = [];
+// Add new event
 app.post('/event',function(req,res){
-    events = req.body.events
+    events.push(req.body.newEvent);
     console.log(events);
+    var j = schedule.scheduleJob(req.body.newEvent.start,function(){
+        console.log("Sending SMS to " + req.body.newEvent.sendTo);
+        twilio.messages.create({
+            to: "+15558675309",  // TODO: changeme
+            from: req.body.newEvent.sendTo,
+            body: req.body.newEvent.title,
+        }, function(err, message) {
+            console.log(message.sid);
+        });
+    });
+    js.push(j);
 });
 
 // Return current events
@@ -21,6 +41,7 @@ app.post('/event/fetch',function(req,res){
     //res.setHeader('Content-Type', 'application/json')
     res.send(JSON.stringify(events))
 });
+
 // respond with "<index.html>" when a GET request is made to the homepage
 app.get('/', function (req, res) {
   var options = {

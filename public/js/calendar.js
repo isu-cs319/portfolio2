@@ -24,7 +24,7 @@ app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
             /* event source that contains custom events on the scope */
             $http.post('/event/fetch', '')
                 .success(function (data) {
-                    deferred.resolve(JSON.parse(data));
+                    deferred.resolve(data);
                 })
                 .error(function (data) {
                     deferred.reject('Error: ' + data);
@@ -37,6 +37,7 @@ app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
             function(payload){
                 console.log(payload.data);
                 $scope.events = payload.data;
+                return payload.data;
             });
     };
     /*var promise = $scope.asyncEvents();
@@ -48,7 +49,7 @@ app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
         alert('Failed: ' + reason);
     });*/
     var promise = $scope.asyncEvents2();
-    console.log(promise);
+   console.log(promise);
    console.log($scope.events);
     /*$scope.events =
         [
@@ -323,7 +324,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
         if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != ''){
             $scope.newEvent.start = $scope.mytime;
             $scope.events.push($scope.newEvent);
-            $http.post("/event", {events:$scope.events}) // TODO: JSON.stringify?
+            $http.post("/event", {newEvent:$scope.newEvent}) // TODO: JSON.stringify?
                 .success(function(data){
                     console.log("Success: " + data);  // TODO: display some success
             })

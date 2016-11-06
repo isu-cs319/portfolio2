@@ -1,8 +1,8 @@
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Portfolio 2: SMS Reminder</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portfolio 2: SMS Reminder</title>
     <link rel="stylesheet" href="bower_components//bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
     <link rel="stylesheet" href="bower_components/angular-ui/build/angular-ui.min.css"/>
@@ -20,65 +20,72 @@
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="js/calendar.js"></script>
-    </head>
-    <body>
-    <div ng-app="app">
-        <div ng-controller="myCtrl">
-            <div ng-show="alertMessage != undefined && alertMessage != ''">
-                <h4>{{alertMessage}}</h4>
-            </div>
-            <div ng-controller="modalCtrl as $ctrl" class="modal-demo">
-                <!-- Open new event Modal -->
-                <script type="text/ng-template" id="myModalContent.html">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="modal-title">Creating new event...</h3>
-                    </div>
-                    <div ng-controller="dateCtrl">
-                        <div ng-controller="timeCtrl">
-                            <div ng-controller="evtCtrl">
-                    <div class="modal-body" id="modal-body">
-                            <div class="row" ng-init="setEvents($ctrl.items);">
-                                <div class="col-md-6">
-                                    <div style="display:inline-block; min-height:290px;">
-                                        <div uib-datepicker ng-model="mytime" class="well well-sm" datepicker-options="options"></div>
+</head>
+<body>
+<div ng-app="app">
+    <div ng-controller="myCtrl">
+        <div ng-show="alertMessage != undefined && alertMessage != ''">
+            <h4>{{alertMessage}}</h4>
+        </div>
+        <div ng-controller="modalCtrl as $ctrl" class="modal-demo">
+            <!-- Open new event Modal -->
+            <script type="text/ng-template" id="myModalContent.html">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">Creating new event...</h3>
+                </div>
+                <div ng-controller="dateCtrl">
+                    <div ng-controller="timeCtrl">
+                        <div ng-controller="evtCtrl">
+                            <div class="modal-body" id="modal-body">
+                                <div class="row" ng-init="setEvents($ctrl.items);">
+                                    <div class="col-md-6">
+                                        <div style="display:inline-block; min-height:290px;">
+                                            <div uib-datepicker ng-model="mytime" class="well well-sm"
+                                                 datepicker-options="options"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                        <div uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
+                                    <div class="col-md-6">
+                                        <div uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep"
+                                             minute-step="mstep" show-meridian="ismeridian"></div>
                                         <pre class="alert alert-info">Selected Date: {{mytime | date:'short' }}</pre>
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
-                                        <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear
+                                        </button>
                                         <hr>
-                                            <label> Phone #:
-                                                <input type="text" name="input" placeholder="(123)-456-7891" ng-model="newEvent.sendTo">
-                                            </label>
-                                            <label>Message:
-                                            <textarea ng-model="newEvent.title" placeholder="Super Secret Party"></textarea>
-                                            </label>
+                                        <label> Phone #:
+                                            <input type="text" name="input" placeholder="(123)-456-7891"
+                                                   ng-model="newEvent.sendTo">
+                                        </label>
+                                        <label>Message:
+                                            <textarea ng-model="newEvent.title"
+                                                      placeholder="Super Secret Party"></textarea>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
-                        <!-- <ul>
-                             <li ng-repeat="item in $ctrl.items">
-                                 <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-                             </li>
-                         </ul>
-                         Selected: <b>{{ $ctrl.selected.item }}</b>-->
-                    <div class="modal-footer">
-                            <button class="btn btn-primary" type="button" ng-click="submit();$ctrl.ok();">OK</button>
-                            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel();">Cancel</button>
-                    </div>
-                    </div>
+                            <!-- <ul>
+                                 <li ng-repeat="item in $ctrl.items">
+                                     <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+                                 </li>
+                             </ul>
+                             Selected: <b>{{ $ctrl.selected.item }}</b>-->
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="button" ng-click="submit();$ctrl.ok();">OK
+                                </button>
+                                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel();">Cancel</button>
                             </div>
                         </div>
-                </script>
-                <button type="button" class="btn btn-primary" ng-click="$ctrl.open('lg')">Add Event</button>
-                <div ng-show="$ctrl.selected">Selection from a modal: {{ $ctrl.selected }}</div>
-                <div class="modal-parent">
+                    </div>
                 </div>
-                <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+            </script>
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.open('lg')">Add Event</button>
+            <div ng-show="$ctrl.selected">Selection from a modal: {{ $ctrl.selected }}</div>
+            <div class="modal-parent">
             </div>
+            <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
         </div>
     </div>
-    </body>
+</div>
+</body>
 </html>
