@@ -4,7 +4,7 @@
 var app = angular.module('app', ['ui.calendar', 'ui.bootstrap']);
 
 // Calendar controller
-app.controller('myCtrl', ['$scope', function($scope) {
+app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -18,15 +18,47 @@ app.controller('myCtrl', ['$scope', function($scope) {
         className: 'gcal-event',           // an option!
         currentTimezone: 'America/Chicago' // an option!
     };*/
-    /* event source that contains custom events on the scope */
-    $scope.events = [
+    $scope.events = [];
+    $scope.asyncEvents = function(){
+        var deferred = $q.defer();
+            /* event source that contains custom events on the scope */
+            $http.post('/event/fetch', '')
+                .success(function (data) {
+                    deferred.resolve(JSON.parse(data));
+                })
+                .error(function (data) {
+                    deferred.reject('Error: ' + data);
+                });
+        return deferred.promise;
+    };
+    $scope.asyncEvents2 = function(){
+        /* event source that contains custom events on the scope */
+        return $http.post('/event/fetch', '').then(
+            function(payload){
+                console.log(payload.data);
+                $scope.events = payload.data;
+            });
+    };
+    /*var promise = $scope.asyncEvents();
+    promise.then(function(events){
+        $scope.events = JSON.parse(events);
+        console.log($scope.events);
+        // Now its available...
+    }, function(reason) {
+        alert('Failed: ' + reason);
+    });*/
+    var promise = $scope.asyncEvents2();
+    console.log(promise);
+   console.log($scope.events);
+    /*$scope.events =
+        [
         {title: 'All Day Event',start: new Date(y, m, 1), status: 'full'},
         {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2), status: 'full'}, // multiple days
         {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false, status: 'partial'},
         {id: 919,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false, status: 'partial'},
         {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false, status: 'partial'},
         {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/', status: 'partial'}
-    ];
+    ];*/
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
         var s = new Date(start).getTime() / 1000;
@@ -72,12 +104,6 @@ app.controller('myCtrl', ['$scope', function($scope) {
     };
     /* add custom event*/
     $scope.addEvent = function(elem) {
-       /* $scope.events.push({
-            title: 'Open Sesame',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            className: ['openSesame']
-        });*/
     };
     /* remove event */
     $scope.remove = function(index) {
@@ -100,7 +126,7 @@ app.controller('myCtrl', ['$scope', function($scope) {
             editable: true,
             header:{
                 left: 'title',
-                center: '',
+                center: 'SMS Reminder System',
                 right: 'today prev,next'
             },
             eventClick: $scope.alertOnEventClick,
@@ -294,18 +320,19 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
     };
 
     $scope.submit = function () {
-        if ($scope.newEvent.title != '' && $scope.sendTo != ''){
+        if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != ''){
+            $scope.newEvent.start = $scope.mytime;
             $scope.events.push($scope.newEvent);
-            $http.post("/event", {newEvent:JSON.stringify($scope.newEvent)})
+            $http.post("/event", {events:$scope.events}) // TODO: JSON.stringify?
                 .success(function(data){
-                    console.log("Success: " + data);  // TODO: display some alert
+                    console.log("Success: " + data);  // TODO: display some success
             })
                 .error(function(data){
-                    console.log('Error: ' + data);
+                    console.log('Error: ' + data);   // TODO: display some alert
         });
         }
         else{
-            alert("Message or phone field is empty!");
+            alert("Error. Message or phone field is empty!");
         }
     };
 }]);

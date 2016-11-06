@@ -10,9 +10,16 @@ app.use(express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 var events = [];
 
+// Update events
 app.post('/event',function(req,res){
-    events.push(req.body.newEvent)
+    events = req.body.events
     console.log(events);
+});
+
+// Return current events
+app.post('/event/fetch',function(req,res){
+    //res.setHeader('Content-Type', 'application/json')
+    res.send(JSON.stringify(events))
 });
 // respond with "<index.html>" when a GET request is made to the homepage
 app.get('/', function (req, res) {
