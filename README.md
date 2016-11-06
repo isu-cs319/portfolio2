@@ -15,3 +15,5 @@
 * [Calendar](http://angular-ui.github.io/ui-calendar/)
 * [SMS/Texting API](https://www.twilio.com/docs/)
 * [Express-Server](https://expressjs.com/)
+* [Node-schedule](https://www.npmjs.com/package/node-schedule)
+* [Angular bootstrap](https://angular-ui.github.io/bootstrap/)
