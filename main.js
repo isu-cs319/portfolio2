@@ -18,7 +18,7 @@ var twilio = require('twilio')(accountSid, authToken);
 app.use(express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 var events = [];
-var js = [];
+var js = {}; // associative array
 // Add new event
 app.post('/event',function(req,res){
     events.push(req.body.newEvent);
@@ -28,12 +28,19 @@ app.post('/event',function(req,res){
         twilio.messages.create({
             from: "+14242312096",
             to: req.body.newEvent.sendTo,
-            body: req.body.newEvent.title,
+            body: req.body.newEvent.title
         }, function(err, message) {
             console.log(message.sid);
+            if (err != null)
+                console.log(err);
         });
+
     });
-    js.push(j);
+    js[req.body.newEvent.id] = j;
+});
+
+app.post('/event/cancel', function(req,res){
+    delete js[req.body.id];
 });
 
 // Return current events
