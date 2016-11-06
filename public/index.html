@@ -10,7 +10,8 @@
     <!-- jquery, moment, and angular have to get included before fullcalendar -->
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
@@ -20,10 +21,12 @@
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="js/calendar.js"></script>
+    <script type="text/javascript" src="js/services.js"></script>
 </head>
 <body>
 <div ng-app="app">
     <div ng-controller="myCtrl">
+        <div ng-view></div>
         <div ng-show="alertMessage != undefined && alertMessage != ''">
             <h4>{{alertMessage}}</h4>
         </div>
@@ -79,7 +82,7 @@
                     </div>
                 </div>
             </script>
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.open('lg')">Add Event</button>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="$ctrl.open('lg')">Add Event</button>
             <div ng-show="$ctrl.selected">Events: {{ $ctrl.selected }}</div>
             <div class="modal-parent">
             </div>

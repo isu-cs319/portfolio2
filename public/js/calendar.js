@@ -1,27 +1,38 @@
 /**
  * Created by schott on 03.11.16.
  */
-var app = angular.module('app', ['ui.calendar', 'ui.bootstrap']);
+var app = angular.module('app', ['ui.calendar', 'ui.bootstrap', 'app.services', 'ngRoute']);
+
+// Not used yet, $route doesnt update in time...
+app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/load', {
+        //templateUrl: 'index.html',
+        controller: 'myCtrl',
+        resolve: {
+            events: function (srvEvents) {
+                return srvEvents.getEvents();
+            }
+        }
+    });
+}]);
 
 // Calendar controller
-app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
+app.controller('myCtrl', ['$scope','$http','$q','$route', function($scope,$http,$q,$route) {
+
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
 
 
-    $scope.eventSource = [];  // TODO: (not so important) For holidays define some feed like here https://fullcalendar.io/docs/event_data/eventSources/
-    /* DEPRECATED: event source that pulls from google.com, no longer public.
     $scope.eventSource = {
-        url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
-        className: 'gcal-event',           // an option!
-        currentTimezone: 'America/Chicago' // an option!
-    };*/
+        url:"/event/fetch",
+        method:"POST"
+    };  // TODO: (not so important) For holidays define some feed like here https://fullcalendar.io/docs/event_data/eventSources/
     $scope.events = [];
+    /*
     $scope.asyncEvents = function(){
         var deferred = $q.defer();
-            /* event source that contains custom events on the scope */
             $http.post('/event/fetch', '')
                 .success(function (data) {
                     deferred.resolve(data);
@@ -32,25 +43,16 @@ app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
         return deferred.promise;
     };
     $scope.asyncEvents2 = function(){
-        /* event source that contains custom events on the scope */
         return $http.post('/event/fetch', '').then(
             function(payload){
-                console.log(payload.data);
                 $scope.events = payload.data;
                 return payload.data;
             });
     };
-    /*var promise = $scope.asyncEvents();
-    promise.then(function(events){
-        $scope.events = JSON.parse(events);
-        console.log($scope.events);
-        // Now its available...
-    }, function(reason) {
-        alert('Failed: ' + reason);
-    });*/
-    var promise = $scope.asyncEvents2();
-   console.log(promise);
-   console.log($scope.events);
+    $scope.asyncEvents2().then(function(items)  {
+        $scope.events = items;
+    });
+    console.log($scope.events);
     /*$scope.events =
         [
         {title: 'All Day Event',start: new Date(y, m, 1), status: 'full'},
@@ -127,8 +129,8 @@ app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
             height: 450,
             editable: true,
             header:{
-                left: 'title',
-                center: 'SMS Reminder System',
+                left: '',
+                center: 'title',
                 right: 'today prev,next'
             },
             eventClick: $scope.alertOnEventClick,
@@ -193,7 +195,6 @@ app.controller('modalCtrl', ['$uibModal','$log','$document','$scope', function (
             $log.info('modal-component dismissed at: ' + new Date());
         });
     };
-
 }]);
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
