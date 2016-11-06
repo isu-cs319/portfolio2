@@ -33,16 +33,14 @@
                     <div class="modal-header">
                         <h3 class="modal-title" id="modal-title">Creating new event...</h3>
                     </div>
+                    <div ng-controller="evtCtrl">
                     <div class="modal-body" id="modal-body">
                         <div ng-controller="dateCtrl">
-                            <div class="row">
+                            <div class="row" ng-init="setEvents($ctrl.items);">
                                 <div class="col-md-6">
-                                    <!--<pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre>-->
                                     <div style="display:inline-block; min-height:290px;">
                                         <div uib-datepicker ng-model="mytime" class="well well-sm" datepicker-options="options"></div>
                                     </div>
-
-                                    <hr />
                                 </div>
                                 <div class="col-md-6">
                                     <div ng-controller="timeCtrl">
@@ -51,6 +49,13 @@
                                         <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
                                         <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
                                         <hr>
+                                            <label> Phone #:
+                                                <input type="text" name="input" placeholder="(123)-456-7891" ng-model="newEvent.sendTo">
+                                            </label>
+                                            <label>Message:
+                                            <textarea ng-model="newEvent.title" placeholder="Super Secret Party"></textarea>
+                                            </label>
+                                        <!-- btns here-->
                                     </div>
                                 </div>
                             </div>
@@ -63,14 +68,12 @@
                          Selected: <b>{{ $ctrl.selected.item }}</b>-->
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-                        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                            <button class="btn btn-primary" type="button" ng-click="submit();$ctrl.ok();">OK</button>
+                            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel();">Cancel</button>
+                    </div>
                     </div>
                 </script>
-                <button type="button" class="btn btn-primary" ng-click="$ctrl.open('lg')">Open</button>
-                <button type="button" class="btn btn-primary" ng-click="addEvent()">
-                    Add Event
-                </button>
+                <button type="button" class="btn btn-primary" ng-click="$ctrl.open('lg')">Add Event</button>
                 <div ng-show="$ctrl.selected">Selection from a modal: {{ $ctrl.selected }}</div>
                 <div class="modal-parent">
                 </div>

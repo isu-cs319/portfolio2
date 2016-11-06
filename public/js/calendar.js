@@ -20,12 +20,12 @@ app.controller('myCtrl', ['$scope', function($scope) {
     };*/
     /* event source that contains custom events on the scope */
     $scope.events = [
-        {title: 'All Day Event',start: new Date(y, m, 1)},
-        {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-        {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-        {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-        {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-        {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
+        {title: 'All Day Event',start: new Date(y, m, 1), status: 'full'},
+        {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2), status: 'full'}, // multiple days
+        {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false, status: 'partial'},
+        {id: 919,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false, status: 'partial'},
+        {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false, status: 'partial'},
+        {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/', status: 'partial'}
     ];
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
@@ -72,7 +72,6 @@ app.controller('myCtrl', ['$scope', function($scope) {
     };
     /* add custom event*/
     $scope.addEvent = function(elem) {
-        console.log(elem);
        /* $scope.events.push({
             title: 'Open Sesame',
             start: new Date(y, m, 28),
@@ -175,11 +174,11 @@ app.controller('ModalInstanceCtrl',function ($uibModalInstance, items) {
     var $ctrl = this;
     $ctrl.items = items;
     $ctrl.selected = {
-        item: $ctrl.items[0]
+        item: $ctrl.items
     };
 
     $ctrl.ok = function () {
-        $uibModalInstance.close($ctrl.selected.item);
+        $uibModalInstance.close($ctrl.items);
     };
 
     $ctrl.cancel = function () {
@@ -200,12 +199,12 @@ app.component('modalComponent', {
         $ctrl.$onInit = function () {
             $ctrl.items = $ctrl.resolve.items;
             $ctrl.selected = {
-                item: $ctrl.items[0]
+                item: $ctrl.items
             };
         };
 
         $ctrl.ok = function () {
-            $ctrl.close({$value: $ctrl.selected.item});
+            $ctrl.close({$value: $ctrl.items});
         };
 
         $ctrl.cancel = function () {
@@ -216,27 +215,16 @@ app.component('modalComponent', {
 
 // Begin Timepicker
 app.controller('timeCtrl', function ($scope, $log) {
-    //$scope.mytime = new Date();
-
     $scope.hstep = 1;
     $scope.mstep = 15;
 
     $scope.ismeridian = true;
 
-    $scope.update = function() {
-        var d = new Date();
-        d.setHours( 14 );
-        d.setMinutes( 0 );
-        $scope.mytime = d;
-    };
 
     $scope.changed = function () {
         $log.log('Time changed to: ' + $scope.mytime);
     };
 
-   /* $scope.clear = function() {
-        $scope.mytime = null;
-    };*/
 });
 // Date controller
 app.controller('dateCtrl', function ($scope) {
@@ -255,12 +243,16 @@ app.controller('dateCtrl', function ($scope) {
         showWeeks: true
     };
 
+    $scope.setEvents = function(items){
+        $scope.events = items;
+    };
+
 
     $scope.setDate = function(year, month, day) {
         $scope.mytime = new Date(year, month, day);
     };
 
-    var tomorrow = new Date();
+   /* var tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     var afterTomorrow = new Date(tomorrow);
     afterTomorrow.setDate(tomorrow.getDate() + 1);
@@ -273,7 +265,7 @@ app.controller('dateCtrl', function ($scope) {
             date: afterTomorrow,
             status: 'partially'
         }
-    ];
+    ];*/
 
     function getDayClass(data) {
         var date = data.date,
@@ -282,8 +274,7 @@ app.controller('dateCtrl', function ($scope) {
             var dayToCheck = new Date(date).setHours(0,0,0,0);
 
             for (var i = 0; i < $scope.events.length; i++) {
-                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-
+                var currentDay = new Date($scope.events[i].start).setHours(0,0,0,0);
                 if (dayToCheck === currentDay) {
                     return $scope.events[i].status;
                 }
@@ -292,3 +283,22 @@ app.controller('dateCtrl', function ($scope) {
         return '';
     }
 });
+// Textbox, and event creator
+app.controller('evtCtrl', ['$scope',function ($scope) {
+    $scope.newEvent = {
+        start: $scope.mytime,
+        title: '',
+        availability:'partial',
+        id: Date.now(),
+        sendTo: ''
+    };
+
+    $scope.submit = function () {
+        if ($scope.newEvent.title != '' && $scope.sendTo != ''){
+            $scope.events.push($scope.newEvent);
+        }
+        else{
+            alert("Message or phone field is empty!");
+        }
+    };
+}]);
