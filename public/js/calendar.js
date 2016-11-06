@@ -80,6 +80,7 @@ app.controller('myCtrl', ['$scope', '$http','$q', function($scope, $http,$q) {
     };
     /* alert on eventClick */
     $scope.alertOnEventClick = function( date, jsEvent, view){
+        // date = event
         $scope.alertMessage = (date.title + ' was clicked ');
     };
     /* alert on Drop */
@@ -204,8 +205,10 @@ app.controller('ModalInstanceCtrl',function ($uibModalInstance, items) {
         item: $ctrl.items
     };
 
-    $ctrl.ok = function () {
-        $uibModalInstance.close($ctrl.items);
+    $ctrl.ok = function (valid) {
+        console.log(valid);
+        if (valid == undefined && !valid) // This is a bit of a hack, but it works. Do not change!
+            $uibModalInstance.close($ctrl.items);
     };
 
     $ctrl.cancel = function () {
@@ -327,13 +330,16 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
             $http.post("/event", {newEvent:$scope.newEvent}) // TODO: JSON.stringify?
                 .success(function(data){
                     console.log("Success: " + data);  // TODO: display some success
+                    return true;
             })
                 .error(function(data){
                     console.log('Error: ' + data);   // TODO: display some alert
+                    return false;
         });
         }
         else{
             alert("Error. Message or phone field is empty!");
+            return false;
         }
     };
 }]);
