@@ -284,7 +284,7 @@ app.controller('dateCtrl', function ($scope) {
     }
 });
 // Textbox, and event creator
-app.controller('evtCtrl', ['$scope',function ($scope) {
+app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
     $scope.newEvent = {
         start: $scope.mytime,
         title: '',
@@ -296,6 +296,13 @@ app.controller('evtCtrl', ['$scope',function ($scope) {
     $scope.submit = function () {
         if ($scope.newEvent.title != '' && $scope.sendTo != ''){
             $scope.events.push($scope.newEvent);
+            $http.post("/event", {newEvent:JSON.stringify($scope.newEvent)})
+                .success(function(data){
+                    console.log("Success: " + data);  // TODO: display some alert
+            })
+                .error(function(data){
+                    console.log('Error: ' + data);
+        });
         }
         else{
             alert("Message or phone field is empty!");
