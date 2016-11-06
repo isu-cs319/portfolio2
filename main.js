@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 // Twilio Stuff
 var accountSid = 'ACe95176a3665dff3c959b81a7830b8797';
-var authToken = 'your_auth_token';  //TODO: changeme, do not upload to github!
+var authToken = '';  //TODO: changeme, do not upload to github!
 var twilio = require('twilio')(accountSid, authToken);
 
 // Routing Config
@@ -26,8 +26,8 @@ app.post('/event',function(req,res){
     var j = schedule.scheduleJob(req.body.newEvent.start,function(){
         console.log("Sending SMS to " + req.body.newEvent.sendTo);
         twilio.messages.create({
-            to: "+15558675309",  // TODO: changeme
-            from: req.body.newEvent.sendTo,
+            from: "+14242312096",
+            to: req.body.newEvent.sendTo,
             body: req.body.newEvent.title,
         }, function(err, message) {
             console.log(message.sid);
