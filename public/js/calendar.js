@@ -84,18 +84,18 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
     $scope.alertOnEventClick = function( date, jsEvent, view){
         // date = event
         $scope.selectedEvent = date;
-        console.log($scope.selectedEvent);
-        $uibModal.open({
+
+        var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'viewEventModal.html',
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl',
-            size: 'lg',
+            component: 'detailsModalComponent',
             resolve: {
                 items: function () {
-                    return $scope.events;
+                    return $scope.selectedEvent;
                 }
             }
+        });
+        modalInstance.result.then(function (selectedItem) {
+            this.selected = selectedItem;
         });
     };
     /* alert on Drop */
@@ -232,6 +232,32 @@ app.controller('ModalInstanceCtrl',function ($uibModalInstance, items) {
 
 app.component('modalComponent', {
     templateUrl: 'myModalContent.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    controller: function () {
+        var $ctrl = this;
+
+        $ctrl.$onInit = function () {
+            $ctrl.items = $ctrl.resolve.items;
+            $ctrl.selected = {
+                item: $ctrl.items
+            };
+        };
+
+        $ctrl.ok = function () {
+            $ctrl.close({$value: $ctrl.items});
+        };
+
+        $ctrl.cancel = function () {
+            $ctrl.dismiss({$value: 'cancel'});
+        };
+    }
+});
+app.component('detailsModalComponent', {
+    templateUrl: 'viewEventModal.html',
     bindings: {
         resolve: '<',
         close: '&',
