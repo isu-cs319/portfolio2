@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 // Twilio Stuff
 var accountSid = 'ACe95176a3665dff3c959b81a7830b8797';
-var authToken = '';  //TODO: changeme, do not upload to github!
+var authToken = '1';  //TODO: changeme, do not upload to github!
 var twilio = require('twilio')(accountSid, authToken);
 
 // Routing Config
@@ -27,7 +27,7 @@ app.post('/event',function(req,res){
         if (req.body.id == events[i].id){
             duplicate = true;
         }
-        }
+    }
     if (!duplicate){
     events.push(req.body.newEvent);
     console.log(events);
@@ -50,6 +50,7 @@ app.post('/event',function(req,res){
 
 // Remove an event
 app.post('/event/cancel', function(req,res){
+    console.log("Cancelling event with id " + req.body.id);
     js[req.body.id].cancel(); // cancel job
     delete js[req.body.id];  // Remove from list
     for (var i = 0; i < events.length; i++) {

@@ -124,8 +124,13 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
     $scope.addEvent = function(elem) {
     };
     /* remove event */
-    $scope.remove = function(index) {
-        $scope.events.splice(index,1);
+    $scope.remove = function(id) {
+        for (var i = 0; i < $scope.events.length; i++) {
+            if ($scope.events[i].id == id){
+                $scope.events.splice(i,1);
+            }
+        }
+        console.log($scope.events);
     };
     /* Change View */
     $scope.changeView = function(view,calendar) {
@@ -204,7 +209,6 @@ app.controller('ModalInstanceCtrl',function ($uibModalInstance, items) {
     };
 
     $ctrl.ok = function (valid) {
-        console.log(valid);
         if (valid == undefined && !valid) // This is a bit of a hack, but it works. Do not change!
             $uibModalInstance.close($ctrl.items);
     };
@@ -311,7 +315,6 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
     $scope.submit = function () {
         if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != ''){
             $scope.newEvent.start = moment.tz($scope.mytime, "America/Chicago").format();
-            console.log($scope.newEvent.start);
             $scope.events.push($scope.newEvent);
             $http.post("/event", {newEvent:$scope.newEvent}) // TODO: JSON.stringify?
                 .success(function(data){
@@ -327,5 +330,8 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
             alert("Error. Message or phone field is empty!");
             return false;
         }
+    };
+    $scope.unSubmit = function (id) {
+        $http.post("/event/cancel", {id:id});
     };
 }]);
