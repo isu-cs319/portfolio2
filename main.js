@@ -21,6 +21,14 @@ var events = [];
 var js = {}; // associative array
 // Add new event
 app.post('/event',function(req,res){
+    // Check for duplicates
+    var duplicate = false;
+    for (var i = 0; i < events.length; i++) {
+        if (req.body.id == events[i].id){
+            duplicate = true;
+        }
+        }
+    if (!duplicate){
     events.push(req.body.newEvent);
     console.log(events);
     var j = schedule.scheduleJob(req.body.newEvent.start,function(){
@@ -37,6 +45,7 @@ app.post('/event',function(req,res){
 
     });
     js[req.body.newEvent.id] = j;
+    }
 });
 
 // Remove an event
