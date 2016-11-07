@@ -17,7 +17,7 @@ app.config(['$routeProvider', function($routeProvider) {
 }]);
 
 // Calendar controller
-app.controller('myCtrl', ['$scope','$http','$q','$route', function($scope,$http,$q,$route) {
+app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function($scope,$http,$q,$route,$uibModal) {
 
     var date = new Date();
     var d = date.getDate();
@@ -83,7 +83,20 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', function($scope,$http,
     /* alert on eventClick */
     $scope.alertOnEventClick = function( date, jsEvent, view){
         // date = event
-        $scope.alertMessage = (date.title + ' was clicked ');
+        $scope.selectedEvent = date;
+        console.log($scope.selectedEvent);
+        $uibModal.open({
+            animation: true,
+            templateUrl: 'viewEventModal.html',
+            controller: 'ModalInstanceCtrl',
+            controllerAs: '$ctrl',
+            size: 'lg',
+            resolve: {
+                items: function () {
+                    return $scope.events;
+                }
+            }
+        });
     };
     /* alert on Drop */
     $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
@@ -156,22 +169,22 @@ app.controller('modalCtrl', ['$uibModal','$log','$document','$scope', function (
     $ctrl.open = function (size, parentSelector) {
         var parentElem = parentSelector ?
             angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
-        var modalInstance = $uibModal.open({
-            animation: $ctrl.animationsEnabled,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'myModalContent.html',
-            controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl',
-            size: size,
-            appendTo: parentElem,
-            resolve: {
-                items: function () {
-                    return $ctrl.items;
-                }
-            }
-        });
 
+        var modalInstance = $uibModal.open({
+                animation: $ctrl.animationsEnabled,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'myModalContent.html',
+                controller: 'ModalInstanceCtrl',
+                controllerAs: '$ctrl',
+                size: size,
+                appendTo: parentElem,
+                resolve: {
+                    items: function () {
+                        return $ctrl.items;
+                    }
+                }
+            });
         modalInstance.result.then(function (selectedItem) {
             $ctrl.selected = selectedItem;
         }, function () {
@@ -343,4 +356,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
             return false;
         }
     };
+    $scope.openDetails = function() {
+
+    }
 }]);
