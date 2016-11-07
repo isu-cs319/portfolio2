@@ -27,7 +27,8 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
 
     $scope.eventSource = {
         url:"/event/fetch",
-        method:"POST"
+        method:"POST",
+        currentTimezone: false
     };  // TODO: (not so important) For holidays define some feed like here https://fullcalendar.io/docs/event_data/eventSources/
     $scope.events = [];
     /*
@@ -191,23 +192,6 @@ app.controller('modalCtrl', ['$uibModal','$log','$document','$scope', function (
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
-    $ctrl.openComponentModal = function () {
-        var modalInstance = $uibModal.open({
-            animation: $ctrl.animationsEnabled,
-            component: 'modalComponent',
-            resolve: {
-                items: function () {
-                    return $ctrl.items;
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-            $ctrl.selected = selectedItem;
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
-    };
 }]);
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
@@ -230,32 +214,7 @@ app.controller('ModalInstanceCtrl',function ($uibModalInstance, items) {
     };
 });
 
-app.component('modalComponent', {
-    templateUrl: 'myModalContent.html',
-    bindings: {
-        resolve: '<',
-        close: '&',
-        dismiss: '&'
-    },
-    controller: function () {
-        var $ctrl = this;
 
-        $ctrl.$onInit = function () {
-            $ctrl.items = $ctrl.resolve.items;
-            $ctrl.selected = {
-                item: $ctrl.items
-            };
-        };
-
-        $ctrl.ok = function () {
-            $ctrl.close({$value: $ctrl.items});
-        };
-
-        $ctrl.cancel = function () {
-            $ctrl.dismiss({$value: 'cancel'});
-        };
-    }
-});
 app.component('detailsModalComponent', {
     templateUrl: 'viewEventModal.html',
     bindings: {
@@ -322,21 +281,7 @@ app.controller('dateCtrl', function ($scope) {
         $scope.mytime = new Date(year, month, day);
     };
 
-   /* var tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    var afterTomorrow = new Date(tomorrow);
-    afterTomorrow.setDate(tomorrow.getDate() + 1);
-    $scope.events = [
-        {
-            date: tomorrow,
-            status: 'full'
-        },
-        {
-            date: afterTomorrow,
-            status: 'partially'
-        }
-    ];*/
-
+    // label current dates on calender TODO: this doesnt work unfortunately...
     function getDayClass(data) {
         var date = data.date,
             mode = data.mode;
@@ -365,7 +310,8 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
 
     $scope.submit = function () {
         if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != ''){
-            $scope.newEvent.start = $scope.mytime;
+            $scope.newEvent.start = moment.tz($scope.mytime, "America/Chicago").format();
+            console.log($scope.newEvent.start);
             $scope.events.push($scope.newEvent);
             $http.post("/event", {newEvent:$scope.newEvent}) // TODO: JSON.stringify?
                 .success(function(data){
@@ -382,7 +328,4 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
             return false;
         }
     };
-    $scope.openDetails = function() {
-
-    }
 }]);
