@@ -10,8 +10,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 // Twilio Stuff
-var accountSid = 'ACe95176a3665dff3c959b81a7830b8797';
-var authToken = '1';  //TODO: changeme, do not upload to github!
+fs = require('fs')
+var obj = JSON.parse(fs.readFileSync('auth.cfg', 'utf8'));  // Hide file from git
+var accountSid = obj.account;
+var authToken = obj.auth;
 var twilio = require('twilio')(accountSid, authToken);
 
 // Routing Config

@@ -277,6 +277,7 @@ app.controller('dateCtrl', function ($scope) {
     };
 
     $scope.setEvents = function(items){
+        console.log(items);
         $scope.events = items;
     };
 
@@ -332,6 +333,12 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
         }
     };
     $scope.unSubmit = function (id) {
-        $http.post("/event/cancel", {id:id});
+        $http.post("/event/cancel", {id: id})
+            .success(function (data) {
+                return data;
+            })
+            .error(function (data) {
+                console.log('Error: ' + data);
+            });
     };
 }]);
