@@ -120,9 +120,7 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
             sources.push(source);
         }
     };
-    /* add custom event*/
-    $scope.addEvent = function(elem) {
-    };
+
     /* remove event */
     $scope.remove = function(id) {
         for (var i = 0; i < $scope.events.length; i++) {
@@ -130,7 +128,9 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
                 $scope.events.splice(i,1);
             }
         }
-        console.log($scope.events);
+	//console.log("XXXXXXXXX");
+        //console.log($scope.events);
+	$scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     };
     /* Change View */
     $scope.changeView = function(view,calendar) {
@@ -281,7 +281,6 @@ app.controller('dateCtrl', function ($scope) {
         $scope.events = items;
     };
 
-
     $scope.setDate = function(year, month, day) {
         $scope.mytime = new Date(year, month, day);
     };
@@ -314,7 +313,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
     };
 
     $scope.submit = function () {
-        if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != ''){
+        if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != '' && $scope.newEvent.message != ''){
             $scope.newEvent.start = moment.tz($scope.mytime, "America/Chicago").format();
             $scope.events.push($scope.newEvent);
             $http.post("/event", {newEvent:$scope.newEvent}) // TODO: JSON.stringify?
@@ -328,7 +327,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
         });
         }
         else{
-            alert("Error. Message or phone field is empty!");
+            alert("Error. Title, message, or phone field is empty!");
             return false;
         }
     };
