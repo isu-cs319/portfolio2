@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Portfolio 2: SMS Reminder</title>
-    <link rel="stylesheet" href="bower_components//bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
     <link rel="stylesheet" href="bower_components/angular-ui/build/angular-ui.min.css"/>
     <link rel="stylesheet" href="css/calendar.css"/>
@@ -59,13 +59,20 @@
                                         <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear
                                         </button>
                                         <hr>
-                                        <label> Phone #:
+					<label> Event Title:
+					  <textarea ng-model="newEvent.title" placeholder="Birthday party"></textarea>
+					</label> <br>
+					<label>Reminder message:
+                                            <textarea ng-model="newEvent.message"
+                                                      placeholder="Birthday party is starting"></textarea>
+                                        </label> <br>
+                                        <label> Phone # to send reminder:
                                             <input type="text" name="input" placeholder="+14242312096"
                                                    ng-model="newEvent.sendTo">
-                                        </label>
-                                        <label>Message:
-                                            <textarea ng-model="newEvent.title"
-                                                      placeholder="Super Secret Party"></textarea>
+                                        </label> <br>
+                                        <label> Additional phone # to send reminder (optional):
+					  <input type="text" name="phone2" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo2">
                                         </label>
                                     </div>
                                 </div>
@@ -87,14 +94,18 @@
             </script>
             <script type="text/ng-template" id="viewEventModal.html">
                 <div class="modal-header">
-                    <h3 class="modal-title">Viewing Details</h3>
+                    <h3 class="modal-title">Event Details</h3>
                 </div>
                         <div ng-controller="evtCtrl">
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div>
-                                            <h4>{{$ctrl.items}}</h4>
+                                          <h4>{{$ctrl.items["title"]}}</h4>
+					  <h5>Start time: {{$ctrl.items["start"]}}</h5>
+					  <h5>Reminder: {{$ctrl.items["message"]}}</h5>
+					  <h5>Sending reminder to: {{$ctrl.items["sendTo"]}}</h5>
+					  <h5 class="second-number">Second reminder being sent to: {{$ctrl.items["sendTo2"]}}</h5>
                                         </div>
                                     </div>
                                 </div>
