@@ -25,6 +25,35 @@
     <script type="text/javascript" src="bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.min.js"></script>
     <script type="text/javascript" src="js/calendar.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
+    <style>
+      .phone2 {
+      display:none;
+      }
+      .phone3 {
+      display:none;
+      }
+      .phone4 {
+      display:none;
+      }
+      .phone5 {
+      display:none;
+      }
+      .phone6 {
+      display:none;
+      }
+      .phone7 {
+      display:none;
+      }
+      .phone8 {
+      display:none;
+      }
+      .phone9 {
+      display:none;
+      }
+      .phone10 {
+      display:none;
+      }
+    </style>
 </head>
 <body>
 <div ng-app="app">
@@ -34,10 +63,12 @@
             <h4>{{alertMessage}}</h4>
         </div>
         <div ng-controller="modalCtrl as $ctrl" class="modal-demo">
-            <!-- Add new event Modal -->
+          <!-- Add new event Modal -->
+	  
             <script type="text/ng-template" id="myModalContent.html">
+	      <!-- -->
                 <div class="modal-header">
-                    <h3 class="modal-title" id="modal-title">Creating new event...</h3>
+                  <h3 class="modal-title" id="modal-title">Creating new event...</h3>
                 </div>
                 <div ng-controller="dateCtrl">
                     <div ng-controller="timeCtrl">
@@ -50,15 +81,20 @@
                                                  datepicker-options="options"></div>
                                         </div>
                                     </div>
+				    
                                     <div class="col-md-6">
+				      
                                         <div uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep"
                                              minute-step="mstep" show-meridian="ismeridian"></div>
+					
                                         <pre class="alert alert-info">Selected Date: {{mytime | date:'short' }}</pre>
+					
                                         <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today
                                         </button>
                                         <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear
                                         </button>
                                         <hr>
+					
 					<label> Event Title:
 					  <textarea ng-model="newEvent.title" placeholder="Birthday party"></textarea>
 					</label> <br>
@@ -66,17 +102,73 @@
                                             <textarea ng-model="newEvent.message"
                                                       placeholder="Birthday party is starting"></textarea>
                                         </label> <br>
+					
                                         <label> Phone # to send reminder:
                                             <input type="text" name="input" placeholder="+14242312096"
                                                    ng-model="newEvent.sendTo">
                                         </label> <br>
-                                        <label> Additional phone # to send reminder (optional):
+					<button type="button" id="button1" onclick="click1()"> Click to add another phone number </button>
+					
+                                        <label class="phone2" id="phone2"> Phone # to send reminder:
 					  <input type="text" name="phone2" placeholder="+14242312096"
 						 ng-model="newEvent.sendTo2">
+                                        </label> <br>
+					<button type="button" class="phone2" id="button2" onclick="click2()"> Click to add another phone number </button>
+					
+					<label class="phone3" id="phone3"> Phone # to send reminder:
+					  <input type="text" name="phone3" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo3">
+                                        </label> <br>
+					<button type="button" class="phone3" id="button3" onclick="click3()"> Click to add another phone number </button>
+					
+					<label class="phone4" id="phone4"> Phone # to send reminder:
+					  <input type="text" name="phone4" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo4">
+                                        </label> <br>
+					<button type="button" class="phone4" id="button4" onclick="click4()"> Click to add another phone number </button>
+					
+					<label class="phone5" id="phone5"> Phone # to send reminder:
+					  <input type="text" name="phone5" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo5">
+                                        </label> <br>
+					<button type="button" class="phone5" id="button5" onclick="click5()"> Click to add another phone number </button>
+					
+					<label class="phone6" id="phone6"> Phone # to send reminder:
+					  <input type="text" name="phone6" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo6">
+                                        </label> <br>
+					<button type="button" class="phone6" id="button6" onclick="click6()"> Click to add another phone number </button>
+					
+					<label class="phone7" id="phone7"> Phone # to send reminder:
+					  <input type="text" name="phone7" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo7">
+                                        </label> <br>
+					<button type="button" class="phone7" id="button7" onclick="click7()"> Click to add another phone number </button>
+					
+					<label class="phone8" id="phone8"> Phone # to send reminder:
+					  <input type="text" name="phone8" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo8">
+                                        </label> <br>
+					<button type="button" class="phone8" id="button8" onclick="click8()"> Click to add another phone number </button>
+					
+					<label class="phone9" id="phone9"> Phone # to send reminder:
+					  <input type="text" name="phone9" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo9">
+                                        </label> <br>
+					<button type="button" class="phone9" id="button9" onclick="click9()"> Click to add another phone number </button>
+					
+					<label class="phone10" id="phone10"> Phone # to send reminder:
+					  <input type="text" name="phone10" placeholder="+14242312096"
+						 ng-model="newEvent.sendTo10">
                                         </label>
+					
                                     </div>
+				    
+				    
                                 </div>
+				
                             </div>
+			    
                             <!-- <ul>
                                  <li ng-repeat="item in $ctrl.items">
                                      <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
@@ -91,6 +183,7 @@
                         </div>
                     </div>
                 </div>
+		
             </script>
             <script type="text/ng-template" id="viewEventModal.html">
                 <div class="modal-header">
@@ -104,8 +197,7 @@
                                           <h4>{{$ctrl.items["title"]}}</h4>
 					  <h5>Start time: {{$ctrl.items["start"]}}</h5>
 					  <h5>Reminder: {{$ctrl.items["message"]}}</h5>
-					  <h5>Sending reminder to: {{$ctrl.items["sendTo"]}}</h5>
-					  <h5 class="second-number">Second reminder being sent to: {{$ctrl.items["sendTo2"]}}</h5>
+					  <h5>Sending reminder to: {{$ctrl.items["sendTo"]}} {{$ctrl.items["sendTo2"]}} {{$ctrl.items["sendTo3"]}} {{$ctrl.items["sendTo4"]}} {{$ctrl.items["sendTo5"]}} {{$ctrl.items["sendTo6"]}} {{$ctrl.items["sendTo8"]}} {{$ctrl.items["sendTo9"]}} {{$ctrl.items["sendTo10"]}} </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -134,5 +226,52 @@
         </div>
     </div>
 </div>
+<script>
+  function click1() {
+  document.getElementById("phone2").style.display = "inline-block";
+  document.getElementById("button2").style.display = "inline-block";
+  document.getElementById("button1").style.display = "none";
+  }
+  function click2() {
+  document.getElementById("phone3").style.display = "inline-block";
+  document.getElementById("button3").style.display = "inline-block";
+  document.getElementById("button2").style.display = "none";
+  }
+  function click3() {
+  document.getElementById("phone4").style.display = "inline-block";
+  document.getElementById("button4").style.display = "inline-block";
+  document.getElementById("button3").style.display = "none";
+  }
+  function click4() {
+  document.getElementById("phone5").style.display = "inline-block";
+  document.getElementById("button5").style.display = "inline-block";
+  document.getElementById("button4").style.display = "none";
+  }
+  function click5() {
+  document.getElementById("phone6").style.display = "inline-block";
+  document.getElementById("button6").style.display = "inline-block";
+  document.getElementById("button5").style.display = "none";
+  }
+  function click6() {
+  document.getElementById("phone7").style.display = "inline-block";
+  document.getElementById("button7").style.display = "inline-block";
+  document.getElementById("button6").style.display = "none";
+  }
+  function click7() {
+  document.getElementById("phone8").style.display = "inline-block";
+  document.getElementById("button8").style.display = "inline-block";
+  document.getElementById("button7").style.display = "none";
+  }
+  function click8() {
+  document.getElementById("phone9").style.display = "inline-block";
+  document.getElementById("button9").style.display = "inline-block";
+  document.getElementById("button8").style.display = "none";
+  }
+  function click9() {
+  document.getElementById("phone10").style.display = "inline-block";
+  document.getElementById("button9").style.display = "none";
+  }
+</script>
 </body>
+
 </html>
