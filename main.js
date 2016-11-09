@@ -31,22 +31,26 @@ app.post('/event',function(req,res){
         }
     }
     if (!duplicate){
-    events.push(req.body.newEvent);
-    console.log(events);
-    var j = schedule.scheduleJob(req.body.newEvent.start,function(){
-        console.log("Sending SMS to " + req.body.newEvent.sendTo);
-        twilio.messages.create({
-            from: "+14242312096",
-            to: req.body.newEvent.sendTo,
-            body: req.body.newEvent.title
-        }, function(err, message) {
-            console.log(message.sid);
-            if (err != null)
-                console.log(err);
-        });
-
-    });
-    js[req.body.newEvent.id] = j;
+	events.push(req.body.newEvent);
+	var phones = [req.body.newEvent.sendTo, req.body.newEvent.sendTo2];
+	console.log(events);
+	var j = schedule.scheduleJob(req.body.newEvent.start,function(){
+	    for (var i = 0; i < phones.length; i++) {
+		if (phones[i] != "") {
+		    console.log("Sending SMS to " + phones[i]);
+		    twilio.messages.create({
+			from: "+14242312096",
+			to: phones[i],
+			body: req.body.newEvent.message
+		    }, function(err, message) {
+			console.log(message.sid);
+			if (err != null)
+			    console.log(err);
+		    });
+		}
+	    }
+	});
+	js[req.body.newEvent.id] = j;
     }
 });
 
