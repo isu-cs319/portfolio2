@@ -196,6 +196,7 @@ app.component('detailsModalComponent', {
         };
 
         $ctrl.cancel = function () {
+	    console.log("closing " + $ctrl.items["title"]);
             $ctrl.close({$value: $ctrl.items});
         };
         $ctrl.formatDate = function (date) {
@@ -290,7 +291,13 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
     };
 
     $scope.validatePhones = function () {
-        return $scope.phones[0] != '';
+	var bool = true;
+	for (var i = 0; i < $scope.phones.length; i++) {
+	    if(!$scope.phones[i].match(/[+][1]\d{10}?\b/g)) {
+		bool = false;
+	    }
+	}
+	return bool;
     };
 
     $scope.submit = function () {
@@ -304,12 +311,12 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
                     return true;
             })
                 .error(function(data){
-                    console.log('Error: ' + data);   // TODO: display some alert
+                    console.log('Error (1) : ' + data);   // TODO: display some alert
                     return false;
         });
         }
         else{
-            alert("Error. Title, message, or phone field is empty!");
+            alert("Error. Title, message, or phone field is invalid!");
             return false;
         }
     };
@@ -319,7 +326,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
                 return data;
             })
             .error(function (data) {
-                console.log('Error: ' + data);
+                console.log('Error (2) : ' + data);
             });
     };
 }]);
