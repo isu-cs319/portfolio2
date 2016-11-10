@@ -3,19 +3,6 @@
  */
 var app = angular.module('app', ['ui.calendar', 'ui.bootstrap', 'app.services', 'ngRoute']);
 
-/* Not used yet, $route doesnt update in time...
-app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/load', {
-        //templateUrl: 'index.html',
-        controller: 'myCtrl',
-        resolve: {
-            events: function (srvEvents) {
-                return srvEvents.getEvents();
-            }
-        }
-    });
- }]);*/
-
 // Calendar controller
 app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function($scope,$http,$q,$route,$uibModal) {
 
@@ -31,38 +18,6 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
         currentTimezone: false
     };
     $scope.events = [];
-    /*
-    $scope.asyncEvents = function(){
-        var deferred = $q.defer();
-            $http.post('/event/fetch', '')
-                .success(function (data) {
-                    deferred.resolve(data);
-                })
-                .error(function (data) {
-                    deferred.reject('Error: ' + data);
-                });
-        return deferred.promise;
-    };
-    $scope.asyncEvents2 = function(){
-        return $http.post('/event/fetch', '').then(
-            function(payload){
-                $scope.events = payload.data;
-                return payload.data;
-            });
-    };
-    $scope.asyncEvents2().then(function(items)  {
-        $scope.events = items;
-    });
-    console.log($scope.events);
-    /*$scope.events =
-        [
-        {title: 'All Day Event',start: new Date(y, m, 1), status: 'full'},
-        {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2), status: 'full'}, // multiple days
-        {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false, status: 'partial'},
-        {id: 919,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false, status: 'partial'},
-        {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false, status: 'partial'},
-        {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/', status: 'partial'}
-    ];*/
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
         var s = new Date(start).getTime() / 1000;
@@ -336,7 +291,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
 
     $scope.validatePhones = function () {
         return $scope.phones[0] != '';
-    }
+    };
 
     $scope.submit = function () {
         $scope.collectPhones();

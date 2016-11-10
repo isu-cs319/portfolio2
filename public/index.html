@@ -78,12 +78,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <ul>
-                                 <li ng-repeat="item in $ctrl.items">
-                                     <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-                                 </li>
-                             </ul>
-                             Selected: <b>{{ $ctrl.selected.item }}</b>-->
                             <div class="modal-footer">
                                 <button class="btn btn-primary" type="button" ng-click="$ctrl.ok(submit());">OK
                                 </button>
@@ -106,26 +100,17 @@
                                     <h4>{{$ctrl.items["title"]}}</h4>
                                     <h5>Start time: {{$ctrl.formatDate($ctrl.items["start"])}}</h5>
                                     <h5>Reminder: {{$ctrl.items["message"]}}</h5>
-                                    <h5>Sending reminder to: {{$ctrl.items["sendTo"]}} {{$ctrl.items["sendTo2"]}}
-                                        {{$ctrl.items["sendTo3"]}} {{$ctrl.items["sendTo4"]}} {{$ctrl.items["sendTo5"]}}
-                                        {{$ctrl.items["sendTo6"]}} {{$ctrl.items["sendTo8"]}} {{$ctrl.items["sendTo9"]}}
-                                        {{$ctrl.items["sendTo10"]}} </h5>
+                                    <h5>Sending reminder to: {{$ctrl.items["sendTo"]}} </h5>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok(true);">OK
+                        </button>
                         <button type="button" class="btn btn-sm btn-danger"
                                 ng-click="unSubmit($ctrl.items.id);$ctrl.cancel();">
                             Cancel Event
-                        </button>
-                    </div>
-                    <!-- <ul>
-                         <li ng-repeat="item in $ctrl.items">
-                             <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-                         </li>
-                     </ul>
-                     Selected: <b>{{ $ctrl.selected.item }}</b>-->
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok(true);">OK
                         </button>
                     </div>
                 </div>
