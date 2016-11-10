@@ -195,13 +195,14 @@
                                     <div class="col-md-12">
                                         <div>
                                           <h4>{{$ctrl.items["title"]}}</h4>
-					  <h5>Start time: {{$ctrl.items["start"]}}</h5>
+                                            <h5>Start time: {{$ctrl.formatDate($ctrl.items["start"])}}</h5>
 					  <h5>Reminder: {{$ctrl.items["message"]}}</h5>
 					  <h5>Sending reminder to: {{$ctrl.items["sendTo"]}} {{$ctrl.items["sendTo2"]}} {{$ctrl.items["sendTo3"]}} {{$ctrl.items["sendTo4"]}} {{$ctrl.items["sendTo5"]}} {{$ctrl.items["sendTo6"]}} {{$ctrl.items["sendTo8"]}} {{$ctrl.items["sendTo9"]}} {{$ctrl.items["sendTo10"]}} </h5>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-danger" ng-click="unSubmit($ctrl.items.id);remove($ctrl.items.id);$ctrl.cancel();">
+                                <button type="button" class="btn btn-sm btn-danger"
+                                        ng-click="remove($ctrl.items.id);unSubmit($ctrl.items.id);$ctrl.cancel();">
                                     Cancel Event
                                 </button>
                             </div>

@@ -3,7 +3,7 @@
  */
 var app = angular.module('app', ['ui.calendar', 'ui.bootstrap', 'app.services', 'ngRoute']);
 
-// Not used yet, $route doesnt update in time...
+/* Not used yet, $route doesnt update in time...
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/load', {
         //templateUrl: 'index.html',
@@ -14,7 +14,7 @@ app.config(['$routeProvider', function($routeProvider) {
             }
         }
     });
-}]);
+ }]);*/
 
 // Calendar controller
 app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function($scope,$http,$q,$route,$uibModal) {
@@ -29,7 +29,7 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
         url:"/event/fetch",
         method:"POST",
         currentTimezone: false
-    };  // TODO: (not so important) For holidays define some feed like here https://fullcalendar.io/docs/event_data/eventSources/
+    };
     $scope.events = [];
     /*
     $scope.asyncEvents = function(){
@@ -128,8 +128,7 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
                 $scope.events.splice(i,1);
             }
         }
-	//console.log("XXXXXXXXX");
-        //console.log($scope.events);
+        console.log($scope.events);
 	$scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     };
     /* Change View */
@@ -243,6 +242,10 @@ app.component('detailsModalComponent', {
         $ctrl.cancel = function () {
             $ctrl.dismiss({$value: 'cancel'});
         };
+        $ctrl.formatDate = function (date) {
+            console.log(date);
+            return date.format("dddd, MMMM Do YYYY, h:mm:ss a");
+        }
     }
 });
 
