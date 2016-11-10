@@ -33,7 +33,7 @@ app.post('/event',function(req,res){
     if (!duplicate){
 	events.push(req.body.newEvent);
         var phones = req.body.newEvent.sendTo.split(',');
-	console.log(events);
+        console.log(events);
 	var j = schedule.scheduleJob(req.body.newEvent.start,function(){
 	    for (var i = 0; i < phones.length; i++) {
 		if (phones[i] != null && phones[i] != "") {

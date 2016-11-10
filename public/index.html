@@ -48,15 +48,21 @@
                                             <div uib-datepicker ng-model="mytime" class="well well-sm"
                                                  datepicker-options="options"></div>
                                         </div>
+                                        <div ng-repeat="no in phones" id="phone-catalog">
+                                            <label> Phone # to send reminder:
+                                                <input type="text" name="input" placeholder="+14242312096"
+                                                       class="phone">
+                                            </label>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="registerPhone();">
+                                            +
+                                        </button>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep"
                                              minute-step="mstep" show-meridian="ismeridian">
-
                                         </div>
                                         <pre class="alert alert-info">Selected Date: {{mytime | date:'short' }}</pre>
-
                                         <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today
                                         </button>
                                         <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear
@@ -69,19 +75,6 @@
                                             <textarea ng-model="newEvent.message"
                                                       placeholder="Sarah's party is starting"></textarea>
                                         </label>
-                                        <!--<label> Phone # to send reminder:
-                                            <input type="text" name="input" placeholder="+14242312096"
-                                                   ng-model="newEvent.sendTo">
-                                        </label>-->
-                                        <div ng-repeat="no in phones">
-                                            <label> Phone # to send reminder:
-                                                <input type="text" name="input" placeholder="+14242312096"
-                                                       class="phone">
-                                            </label>
-                                        </div>
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="registerPhone();">
-                                            Add
-                                        </button>
                                     </div>
                                 </div>
                             </div>

@@ -334,9 +334,13 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
         console.log($scope.newEvent.sendTo);
     };
 
+    $scope.validatePhones = function () {
+        return $scope.phones[0] != '';
+    }
+
     $scope.submit = function () {
         $scope.collectPhones();
-        if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != '' && $scope.newEvent.message != ''){
+        if ($scope.newEvent.title != '' && $scope.validatePhones() && $scope.newEvent.message != '') {
             $scope.newEvent.start = moment.tz($scope.mytime, "America/Chicago").format();
             $scope.events.push($scope.newEvent);
             $http.post("/event", {newEvent: $scope.newEvent})
