@@ -130,7 +130,6 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
                 $scope.events.splice(i,1);
             }
         }
-        console.log($scope.events);
 	$scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     };
     /* Change View */
@@ -254,10 +253,7 @@ app.component('detailsModalComponent', {
 app.controller('timeCtrl', function ($scope, $log) {
     $scope.hstep = 1;
     $scope.mstep = 15;
-
     $scope.ismeridian = true;
-
-
     $scope.changed = function () {
         $log.log('Time changed to: ' + $scope.mytime);
     };
@@ -315,12 +311,35 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
         id: Date.now(),
         sendTo: ''
     };
+    // Phones stuff
+    $scope.phones = [$scope.newEvent.sendTo];
+    $scope.registerPhone = function () {
+        $scope.phones.push($scope.phones.length);
+    };
+
+    $scope.changePhone = function (index, elem) {
+        $scope.phones[index] = elem;
+    };
+
+    $scope.collectPhones = function () {
+        $('.phone').each(function (i, obj) {
+            $scope.changePhone(i, obj.value);
+        });
+        $scope.newEvent.sendTo = $scope.phones[0];
+        if ($scope.phones.length > 1) {
+            for (var i = 1; i < $scope.phones.length; i++) {
+                $scope.newEvent.sendTo += ',' + $scope.phones[i];
+            }
+        }
+        console.log($scope.newEvent.sendTo);
+    };
 
     $scope.submit = function () {
+        $scope.collectPhones();
         if ($scope.newEvent.title != '' && $scope.newEvent.sendTo != '' && $scope.newEvent.message != ''){
             $scope.newEvent.start = moment.tz($scope.mytime, "America/Chicago").format();
             $scope.events.push($scope.newEvent);
-            $http.post("/event", {newEvent:$scope.newEvent}) // TODO: JSON.stringify?
+            $http.post("/event", {newEvent: $scope.newEvent})
                 .success(function(data){
                     console.log("Success: " + data);  // TODO: display some success
                     return true;
