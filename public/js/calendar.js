@@ -96,7 +96,9 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
             }
         });
         modalInstance.result.then(function (selectedItem) {
+            console.log(selectedItem);
             this.selected = selectedItem;
+            $scope.remove(selectedItem.id);
         });
     };
     /* alert on Drop */
@@ -236,14 +238,13 @@ app.component('detailsModalComponent', {
         };
 
         $ctrl.ok = function () {
-            $ctrl.close({$value: $ctrl.items});
+            $ctrl.dismiss({$value: 'OK'});
         };
 
         $ctrl.cancel = function () {
-            $ctrl.dismiss({$value: 'cancel'});
+            $ctrl.close({$value: $ctrl.items});
         };
         $ctrl.formatDate = function (date) {
-            console.log(date);
             return date.format("dddd, MMMM Do YYYY, h:mm:ss a");
         }
     }

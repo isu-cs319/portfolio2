@@ -192,7 +192,7 @@
                         <div ng-controller="evtCtrl">
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div>
                                           <h4>{{$ctrl.items["title"]}}</h4>
                                             <h5>Start time: {{$ctrl.formatDate($ctrl.items["start"])}}</h5>
@@ -202,7 +202,7 @@
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-sm btn-danger"
-                                        ng-click="remove($ctrl.items.id);unSubmit($ctrl.items.id);$ctrl.cancel();">
+                                        ng-click="unSubmit($ctrl.items.id);$ctrl.cancel();">
                                     Cancel Event
                                 </button>
                             </div>
@@ -215,7 +215,6 @@
                             <div class="modal-footer">
                                 <button class="btn btn-primary" type="button" ng-click="$ctrl.ok(true);">OK
                                 </button>
-                                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel();">Cancel</button>
                             </div>
                         </div>
             </script>

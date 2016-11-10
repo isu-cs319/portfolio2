@@ -58,8 +58,11 @@ app.post('/event',function(req,res){
 // Remove an event
 app.post('/event/cancel', function(req,res){
     console.log("Cancelling event with id " + req.body.id);
-    js[req.body.id].cancel(); // cancel job
-    delete js[req.body.id];  // Remove from list
+    if (js[req.body.id] != null) {
+        console.log("Cancelling job");
+        js[req.body.id].cancel(); // cancel job
+        delete js[req.body.id];  // Remove from list
+    }
     for (var i = 0; i < events.length; i++) {
         if (req.body.id == events[i].id){
             events.splice(i,1);
