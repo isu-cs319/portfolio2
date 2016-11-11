@@ -11,8 +11,13 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": "4.2.6"
+  },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/isu-cs319/portfolio2.git"
