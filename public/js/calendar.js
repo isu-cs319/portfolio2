@@ -85,6 +85,12 @@ app.controller('myCtrl', ['$scope','$http','$q','$route', '$uibModal', function(
                 $scope.events.splice(i,1);
             }
         }
+        $scope.eventSource = {
+            url: "/event/fetch",
+            method: "POST",
+            currentTimezone: false
+        };
+        console.log($scope.eventSource);
 	$scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     };
     /* Change View */
@@ -265,7 +271,8 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
         title: '',
         availability:'partial',
         id: Date.now(),
-        sendTo: ''
+        sendTo: '',
+        message: ''
     };
     // Phones stuff
     $scope.phones = [$scope.newEvent.sendTo];
@@ -293,7 +300,7 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
     $scope.validatePhones = function () {
 	var bool = true;
 	for (var i = 0; i < $scope.phones.length; i++) {
-	    if(!$scope.phones[i].match(/[+][1]\d{10}?\b/g)) {
+        if (!$scope.phones[i].match(/[+]\d{1,2}\d{10}?\b/g)) {
 		bool = false;
 	    }
 	}
@@ -302,7 +309,19 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
 
     $scope.submit = function () {
         $scope.collectPhones();
-        if ($scope.newEvent.title != '' && $scope.validatePhones() && $scope.newEvent.message != '') {
+        if (!$scope.validatePhones()) {
+            alert("Error. Phone field is invalid!");
+            return false;
+        }
+        else if ($scope.newEvent.title == '') {
+            alert("Error. Title is empty!");
+            return false;
+        }
+        else if ($scope.newEvent.message == '') {
+            alert("Error. Message reminder is empty!");
+            return false;
+        }
+        else {
             $scope.newEvent.start = moment.tz($scope.mytime, "America/Chicago").format();
             $scope.events.push($scope.newEvent);
             $http.post("/event", {newEvent: $scope.newEvent})
@@ -311,13 +330,9 @@ app.controller('evtCtrl', ['$scope','$http',function ($scope,$http) {
                     return true;
             })
                 .error(function(data){
-                    console.log('Error (1) : ' + data);   // TODO: display some alert
+                    console.log('Error : ' + data);   // TODO: display some alert
                     return false;
         });
-        }
-        else{
-            alert("Error. Title, message, or phone field is invalid!");
-            return false;
         }
     };
     $scope.unSubmit = function (id) {
