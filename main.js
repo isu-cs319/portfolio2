@@ -26,14 +26,13 @@ app.post('/event',function(req,res){
     // Check for duplicates
     var duplicate = false;
     for (var i = 0; i < events.length; i++) {
-        if (req.body.id == events[i].id){
+        if (req.body.newEvent.id == events[i].id) {
             duplicate = true;
         }
     }
     if (!duplicate){
 	events.push(req.body.newEvent);
         var phones = req.body.newEvent.sendTo.split(',');
-        console.log(events);
 	var j = schedule.scheduleJob(req.body.newEvent.start,function(){
 	    for (var i = 0; i < phones.length; i++) {
 		if (phones[i] != null && phones[i] != "") {
