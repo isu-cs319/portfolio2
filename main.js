@@ -14,6 +14,7 @@ fs = require('fs')
 var obj = JSON.parse(fs.readFileSync('auth.cfg', 'utf8'));  // Hide file from git
 var accountSid = obj.account;
 var authToken = obj.auth;
+var from = obj.phone;
 var twilio = require('twilio')(accountSid, authToken);
 
 // Routing Config
@@ -38,7 +39,7 @@ app.post('/event',function(req,res){
 		if (phones[i] != null && phones[i] != "") {
 		    console.log("Sending SMS to " + phones[i]);
 		    twilio.messages.create({
-			from: "+14242312096",
+                from: from,
 			to: phones[i],
 			body: req.body.newEvent.message
 		    }, function(err, message) {
