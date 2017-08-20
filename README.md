@@ -1,5 +1,8 @@
 # SMS Notification System
 
+![Screenshot](https://s27.postimg.org/lkfkmpr7n/SMS_Notificaion_System.png)
+
+
 ## Configuration
 0. Make sure [Node.js](https://nodejs.org/en/download/) and npm is installed and configured.
 1. Run `npm install -g bower`.
